@@ -2,6 +2,7 @@ package JASS.Tests;
 
 import java.io.IOException;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -11,6 +12,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
@@ -25,19 +27,19 @@ public class LoginTests {
 	private WebDriver driver;
 	public String sURL = "http://107.170.213.234/catalog/index.php";
 	public CommonMethods CM;
-	public static  Logger logger= Logger.getLogger(LoginTests.class);
-	public static String bType; 
-	
+	public static Logger logger = Logger.getLogger(LoginTests.class);
+	public static String bType;
+
 	@BeforeClass
-	@Parameters({"remoteBrowserType"})
-	public void getBrowser(String browserType ) {
-		bType=browserType;
-		
+	@Parameters({ "remoteBrowserType" })
+	public void getBrowser(@Optional String browserType) {
+		bType = browserType;
+
 	}
-	
+
 	@BeforeMethod
 	public void setUp() {
-		
+
 		CM = new CommonMethods();
 		driver = CM.openBrowser(bType);
 		CM.openUrl(sURL);
@@ -45,10 +47,10 @@ public class LoginTests {
 
 	@AfterMethod
 	public void tearDown(ITestResult it) throws Exception {
-		ScreenCapture ScreenCapture=new ScreenCapture(driver);
+		ScreenCapture ScreenCapture = new ScreenCapture(driver);
 		ScreenCapture.takeScreenShoot(it.getMethod());
-		logger.info("screenshot captured for: " +it.getMethod()+ " Failed TestCase");
-		
+		logger.info("screenshot captured for: " + it.getMethod() + " Failed TestCase");
+
 		CM.closeBrowser();
 	}
 
@@ -58,16 +60,35 @@ public class LoginTests {
 		return userdata;
 	}
 
+	@DataProvider(name = "invalid")
+	public static String[][] dataProvider1() {
+		String[][] userdata = new String[1][2];
+		userdata[0][0] = RandomStringUtils.randomAlphanumeric(10);
+		userdata[0][1] = RandomStringUtils.randomAlphanumeric(10);
+		return userdata;
+	}
+
 	@Test(dataProvider = "userData")
-	public void testcase02(String userName, String password) throws Exception {
+	public void testcase01(String userName, String password) throws Exception {
 		WelcomePage WP = new WelcomePage(driver);
 		WP.clickYourSelfLink();
 		SignInPage SI = new SignInPage(driver);
-		
+
 		SI.Login(userName, password);
 		WP.verifyHeader("Welcome to iBusiness");
 		WP.Logoff();
 
 	}
-	
+
+	@Test(dataProvider = "invalid")
+	public void testcase02(String userName, String password) throws Exception {
+		WelcomePage WP = new WelcomePage(driver);
+		WP.clickYourSelfLink();
+		SignInPage SI = new SignInPage(driver);
+		SI.Login(userName, password);
+		WP.verifyError("Error: No match for E-Mail Address and/or Password.");
+		WP.Logoff();
+
+	}
+
 }

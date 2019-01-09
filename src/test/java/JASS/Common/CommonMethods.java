@@ -10,6 +10,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
 
 public class CommonMethods {
 	private WebDriver driver;
@@ -20,11 +22,13 @@ public class CommonMethods {
 		 remoteBrowserType=ReadPropertyFile.getConfigPropertyVal("BrowserType");
 		}
 		if (remoteBrowserType.equalsIgnoreCase("Chrome")) {
-			System.setProperty("webdriver.chrome.driver", "/Users/Pallavi/Documents/Selenium/chromedriver");
+			//System.setProperty("webdriver.chrome.driver", "/Users/Pallavi/Documents/Selenium/chromedriver");
+			WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
 			logger.info("OPeninng the chrome");
 		} else if (remoteBrowserType.equalsIgnoreCase("FireFox")) {
-			System.setProperty("webdriver.gecko.driver", "/Users/Pallavi/Documents/Selenium/geckodriver");
+			//System.setProperty("webdriver.gecko.driver", "/Users/Pallavi/Documents/Selenium/geckodriver");
+			WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();
 			logger.info("Opening the Firefox");
 		} else {

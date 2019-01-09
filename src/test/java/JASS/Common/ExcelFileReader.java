@@ -1,7 +1,9 @@
 package JASS.Common;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.EncryptedDocumentException;
@@ -11,13 +13,15 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 public class ExcelFileReader {
-	public static String filepath1 = "/Users/Pallavi/Documents/abc123.xlsx";
-	public static String filepath2 = "/users/Pallavi/Documents/Signup.xlsx";
+	public static String filepath1 = "LoginData.xlsx";
+	public static String filepath2 = "Signup.xlsx";
 	public static Logger logger = Logger.getLogger(ExcelFileReader.class);
 
 	public static String[][] getInput() throws InvalidFormatException, IOException {
-
-		FileInputStream fin = new FileInputStream(filepath1);
+		ClassLoader classLoader = ExcelFileReader.class.getClassLoader();
+		
+		File file = new File(classLoader.getResource(filepath1).getFile());
+		FileInputStream fin = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(fin);
 		Sheet s2 = wb.getSheet("sheet 1");
 		int max = s2.getLastRowNum();

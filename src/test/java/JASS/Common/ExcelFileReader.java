@@ -19,7 +19,6 @@ public class ExcelFileReader {
 
 	public static String[][] getInput() throws InvalidFormatException, IOException {
 		ClassLoader classLoader = ExcelFileReader.class.getClassLoader();
-		
 		File file = new File(classLoader.getResource(filepath1).getFile());
 		FileInputStream fin = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(fin);
@@ -39,7 +38,9 @@ public class ExcelFileReader {
 	}
 
 	public static String[][] getData() throws EncryptedDocumentException, InvalidFormatException, IOException {
-		FileInputStream fin = new FileInputStream(filepath2);
+		ClassLoader classLoader = ExcelFileReader.class.getClassLoader();
+		File file = new File(classLoader.getResource(filepath2).getFile());
+		FileInputStream fin = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(fin);
 		Sheet s1 = wb.getSheet("sheet 1");
 		int rowcount = s1.getLastRowNum();
@@ -58,7 +59,9 @@ public class ExcelFileReader {
 
 	}
 	public static String[][] getKey() throws EncryptedDocumentException, InvalidFormatException, IOException {
-		FileInputStream fin = new FileInputStream(filepath2);
+		ClassLoader classLoader = ExcelFileReader.class.getClassLoader();
+		File file = new File(classLoader.getResource(filepath2).getFile());
+		FileInputStream fin = new FileInputStream(file);
 		Workbook wb = WorkbookFactory.create(fin);
 		Sheet s2 = wb.getSheet("sheet 2");
 		int rowcount = s2.getLastRowNum();

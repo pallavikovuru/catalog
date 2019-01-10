@@ -12,6 +12,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -21,8 +23,8 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestNGMethod;
 import org.testng.Reporter;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+//import com.sun.image.codec.jpeg.JPEGCodec;
+//import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ScreenCapture {
 
@@ -47,8 +49,9 @@ public class ScreenCapture {
 		PrtScn = robot.createScreenCapture(rect);
 
 		FileOutputStream out = new FileOutputStream(sFileName);
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		encoder.encode(PrtScn);
+		//JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+		ImageIO.write(PrtScn, "jpeg", out);
+		//encoder.encode(PrtScn);
 		out.flush();
 		out.close();
 

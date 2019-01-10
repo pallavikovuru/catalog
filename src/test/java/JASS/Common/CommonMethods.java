@@ -1,6 +1,7 @@
 package JASS.Common;
 
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -10,7 +11,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+//import io.github.bonigarcia.wdm.WebDriverManager;
 
 
 public class CommonMethods {
@@ -22,13 +23,22 @@ public class CommonMethods {
 		 remoteBrowserType=ReadPropertyFile.getConfigPropertyVal("BrowserType");
 		}
 		if (remoteBrowserType.equalsIgnoreCase("Chrome")) {
-			//System.setProperty("webdriver.chrome.driver", "/Users/Pallavi/Documents/Selenium/chromedriver");
-			WebDriverManager.chromedriver().setup();
+			ClassLoader classLoader = CommonMethods.class.getClassLoader();
+			File chromeFile = new File(classLoader.getResource("chromedriver").getFile());
+			chromeFile.setExecutable(true, false);
+			logger.info("webdriver.chrome.driver path=" + chromeFile.getAbsolutePath());
+			System.setProperty("webdriver.chrome.driver", chromeFile.getAbsolutePath());
+			//WebDriverManager.chromedriver().setup();
 			driver = new ChromeDriver();
 			logger.info("OPeninng the chrome");
 		} else if (remoteBrowserType.equalsIgnoreCase("FireFox")) {
-			//System.setProperty("webdriver.gecko.driver", "/Users/Pallavi/Documents/Selenium/geckodriver");
-			WebDriverManager.firefoxdriver().setup();
+			ClassLoader classLoader = CommonMethods.class.getClassLoader();
+			File firefoxFile = new File(classLoader.getResource("geckodriver").getFile());
+			firefoxFile.setExecutable(true, false);
+			logger.info("webdriver.gecko.driver path=" + firefoxFile.getAbsolutePath());
+			System.setProperty("webdriver.gecko.driver", firefoxFile.getAbsolutePath());
+			
+			//WebDriverManager.firefoxdriver().setup();
 			driver = new FirefoxDriver();
 			logger.info("Opening the Firefox");
 		} else {

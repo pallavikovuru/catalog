@@ -83,13 +83,21 @@
 			<version>4.1.2</version>
 		</dependency>
 		
-		<dependency>
+		<!-- <dependency>
 		   <groupId>io.github.bonigarcia</groupId>
 		   <artifactId>webdrivermanager</artifactId>
 		    <version>3.2.0</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 	<build>
+		<resources>
+	    	<resource>
+	        	<directory>src/main/resources</directory>
+	      	</resource>
+	      	<resource>
+	        	<directory>src/test/resources</directory>
+	      	</resource>
+	    </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
